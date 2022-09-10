@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Task page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
+    <style>
+        form{
+            width: 400px;
+            margin-left: 35%;
+            margin-top: 5%;
+        }
+        body{
+            background-size: cover;
+            background-image: url(https://img.freepik.com/premium-vector/decrease-graph-concept_118813-2990.jpg?w=2000);
+        }
+        button{
+            margin-left: 30%;
+        }
+    </style>
+</head>
+<body>
+<form th:method="POST" th:action="@{/saveTask/{lesId}(lesId=${lesId})}" th:object="${newTask}">
+    <div class="mb-3">
+        <label for="taskName" class="form-label">Task name</label>
+        <input type="text" class="form-control" id="taskName" aria-describedby="emailHelp" th:field="*{taskName}">
+    </div>
+    <div class="mb-3">
+        <label for="taskText" class="form-label">Task text</label>
+        <input type="text" class="form-control" id="taskText" th:field="*{taskText}">
+    </div>
+    <div class="mb-3">
+        <label for="deadline" class="form-label">Deadline</label>
+        <input type="date" class="form-control" id="deadline" name="begin"
+               placeholder="mm-dd-yyyy" th:field="*{deadLine}">
+    </div>
+    <button type="submit" class="btn btn-success">SAVE</button>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+</body>
+</html>

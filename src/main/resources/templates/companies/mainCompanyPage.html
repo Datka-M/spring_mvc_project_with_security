@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title> Main Company page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
+    <style>
+        .text1 {
+            justify-content: center;
+            align-items: center;
+            padding-left: 14%;
+        }
+        .datka {
+            justify-content: center;
+            align-items: center;
+            padding-left: 5%;
+        }
+        body {
+            background-size: cover;
+            background-image: url(https://images.discerningassets.com/image/upload/q_auto:best/c_limit,w_1000/v1570834395/wiw98jrm32y6nfqu3ktq.jpg );
+        }
+        .container {
+            padding: 10% 10% 10% 10%;
+        }
+    </style>
+</head>
+<body>
+<div align="center">
+    <div sec:authorize="isAuthenticated()">
+        Welcome <b><span sec:authentication="name"> Username </span> </b>
+        <i><span sec:authentication="principal.authorities">Roles</span> </i>
+    </div>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Logout">
+    </form>
+    <div class="container">
+        <table class="table">
+            <thead>
+            <tr>
+                <h1 class="text1">COMPANY</h1>
+                <th scope="col">#</th>
+                <th scope="col">Company Name</th>
+                <th scope="col">Located Country</th>
+                <th sec:authorize="hasAnyAuthority('ADMIN','INSTRUCTOR','STUDENT')" scope="col">courses</th>
+                <th sec:authorize="hasAnyAuthority('ADMIN')" scope="col">instructors</th>
+                <th sec:authorize="hasAnyAuthority('ADMIN','INSTRUCTOR')" scope="col">students</th>
+                <th sec:authorize="hasAnyAuthority('ADMIN')" scope="col">update</th>
+                <th sec:authorize="hasAnyAuthority('ADMIN')" scope="col">delete</th>
+            </tr>
+            </thead>
+            <div th:each="company:${companies}">
+                <tbody>
+                <tr>
+                    <th scope="row" th:text="${company.getId()}"></th>
+                    <td th:text="${company.getCompanyName()}"></td>
+                    <td th:text="${company.getLocatedCountry()}"></td>
+                    <td sec:authorize="hasAnyAuthority('ADMIN','INSTRUCTOR','STUDENT')"><a
+                            th:href="@{/allCourses/{id}(id=${company.getId()})}"
+                            class="btn btn-info">courses</a></td>
+                    <td sec:authorize="hasAnyAuthority('ADMIN')"><a
+                            th:href="@{/allInstructors/{companyId}(companyId=${company.getId()})}"
+                            class="btn btn-info">instructors</a></td>
+                    <td sec:authorize="hasAnyAuthority('ADMIN','INSTRUCTOR')"><a
+                            th:href="@{/allStudents/{companyId}(companyId=${company.getId()})}"
+                            class="btn btn-info">students</a></td>
+                    <td sec:authorize="hasAnyAuthority('ADMIN')"><a type="button" class="btn btn-warning"
+                                                                    th:href="@{/edit/{id}(id=${company.getId})}">UPDATE</a>
+                    </td>
+                    <td sec:authorize="hasAnyAuthority('ADMIN')"><a type="button" class="btn btn-danger"
+                                                                    th:href="@{/delete/{id}(id=${company.getId()})}">DELETE</a>
+                    </td>
+                </tr>
+                </tbody>
+            </div>
+        </table>
+    </div>
+    <div class="datka">
+        <a sec:authorize="hasAnyAuthority('ADMIN')" type="button" class="btn btn-success" th:href="@{/new}">Add Company</a>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+</body>
+</html>
